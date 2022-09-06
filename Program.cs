@@ -1,27 +1,26 @@
 using Microsoft.EntityFrameworkCore;
 using ProductM.Models;
 using ProductM.Services;
-using MySql.EntityFrameworkCore.Extensions;
 
-var builder = WebApplication.CreateBuilder(args);
-var services = builder.Services;
-var connectionString = builder.Configuration.GetConnectionString("Default");
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+IServiceCollection services = builder.Services;
+string connectionString = builder.Configuration.GetConnectionString("Default");
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+services.AddControllersWithViews();
 services.AddDbContext<DataContext>(options =>
-    options.UseMySQL(connectionString));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 services.AddTransient<IProductService, ProductService>();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    _ = app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    _ = app.UseHsts();
 }
 
 app.UseHttpsRedirection();
