@@ -1,0 +1,35 @@
+@model List<Product>; //khai bao bien truyen tu controller
+@{
+    ViewData["Title"] = "Product Page";
+    var products = Model; // khoi tao bien nhan data
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome Product Page</h1>
+    <table class="table">
+        <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>
+                <a href="/Product/create" class="btn btn-primary">Create</a>
+            </th>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>@product.Quantity</td>
+                    <td>
+                        <a href="/Product/Update?id=@product.Id" class="btn btn-success">Update</a>
+                        <a href="/Product/Delete?id=@product.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
