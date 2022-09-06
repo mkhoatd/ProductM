@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProductM.Models;
 using ProductM.Services;
+using MySql.EntityFrameworkCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -9,7 +10,7 @@ var connectionString = builder.Configuration.GetConnectionString("Default");
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseMySQL(connectionString));
 
 services.AddTransient<IProductService, ProductService>();
 
