@@ -15,6 +15,21 @@ services.AddTransient<IProductService, ProductService>();
 
 WebApplication app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services1 = scope.ServiceProvider;
+    try
+    {
+        var context=services1.GetRequiredService<DataContext>();
+        await context.Database.MigrateAsync();
+    }
+    catch (Exception e)
+    {
+        var logger = services1.GetRequiredService<ILogger<Program>>();
+        logger.LogError(e, "An error occurred while migrating or seeding the database.");
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
